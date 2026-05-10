@@ -1,0 +1,79 @@
+{
+  "name": "Dopamina Task - Produtividade Gamificada",
+  "short_name": "Dopamina Task",
+  "description": "App de produtividade com sistema de gamificação. Complete tarefas, ganhe XP e mantenha sua sequência!",
+  "start_url": "/dopamina-task/",
+  "scope": "/dopamina-task/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#5bc0eb",
+  "categories": ["productivity", "utilities"],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%235bc0eb' width='192' height='192'/><text x='96' y='96' font-size='48' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>DT</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%235bc0eb' width='512' height='512'/><text x='256' y='256' font-size='200' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>DT</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%235bc0eb' width='192' height='192' rx='45'/><text x='96' y='96' font-size='48' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>DT</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%235bc0eb' width='512' height='512' rx='120'/><text x='256' y='256' font-size='200' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>DT</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Adicionar Tarefa",
+      "short_name": "Nova Tarefa",
+      "description": "Adicione uma nova tarefa rapidamente",
+      "url": "/dopamina-task/?page=tasks",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%235bc0eb' width='96' height='96' rx='20'/><text x='48' y='48' font-size='40' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>+</text></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Iniciar Timer",
+      "short_name": "Timer",
+      "description": "Inicie uma sessão de foco",
+      "url": "/dopamina-task/?page=timer",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%23f7a8b8' width='96' height='96' rx='20'/><circle cx='48' cy='48' r='30' fill='none' stroke='white' stroke-width='3'/><line x1='48' y1='25' x2='48' y2='40' stroke='white' stroke-width='3'/></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/dopamina-task/",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "prefer_related_applications": false
+}
