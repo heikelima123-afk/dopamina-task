@@ -13,6 +13,51 @@
   box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
+
+:root {
+  --primary: #5bc0eb;
+  --secondary: #f7a8b8;
+  --dark-bg: #1a1a2e;
+  --dark-card: #16213e;
+  --dark-text: #eee;
+  --light-bg: #bdeeff;
+  --light-card: #ffffff;
+  --light-text: #2d3142;
+}
+
+body.dark-mode {
+  --primary: #5bc0eb;
+  --secondary: #ff6b9d;
+  --light-bg: #1a1a2e;
+  --light-card: #16213e;
+  --light-text: #eee;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--primary);
+  border: none;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  background: var(--secondary);
+}
+
 .timer-config {
   display: flex;
   justify-content: center;
@@ -21,18 +66,28 @@
   margin-bottom: 15px;
 }
 .note-card {
-  background: #ffffff;
+  background: var(--light-card);
   padding: 15px;
   border-radius: 14px;
   margin-top: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  border-left: 5px solid #5bc0eb;
+  border-left: 5px solid var(--primary);
 }
 
 .note-card p {
   margin-bottom: 10px;
   white-space: pre-wrap;
+  color: var(--light-text);
 }
+
+.note-card button {
+  background: #ff6b6b;
+}
+
+.note-card button:hover {
+  background: #ff5252;
+}
+
 .timer-config label {
   font-weight: bold;
   color: #5f6472;
@@ -47,7 +102,7 @@
 }
 
 .calendar-container {
-  background: rgba(255, 255, 255, 0.88);
+  background: var(--light-card);
   border-radius: 22px;
   padding: 22px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
@@ -65,14 +120,14 @@
 }
 
 .calendar-header button {
-  background: #f7a8b8;
+  background: var(--secondary);
   padding: 8px 12px;
   font-size: 0.9rem;
 }
 
 .calendar-header h4 {
   font-size: 1.1rem;
-  color: #2d3142;
+  color: var(--light-text);
 }
 
 .calendar-grid {
@@ -104,17 +159,22 @@
   transition: all 0.2s;
 }
 
+body.dark-mode .calendar-day {
+  background: #2d4059;
+  color: #bbb;
+}
+
 .calendar-day:hover {
   transform: scale(1.1);
 }
 
 .calendar-day.today {
-  background: linear-gradient(135deg, #5bc0eb, #f7a8b8);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
 }
 
 .calendar-day.active {
-  background: #f7a8b8;
+  background: var(--secondary);
   color: white;
 }
 
@@ -131,6 +191,10 @@
   padding: 15px;
   background: #f8fafc;
   border-radius: 14px;
+}
+
+body.dark-mode .task-controls {
+  background: #2d4059;
 }
 
 .task-controls button {
@@ -156,11 +220,113 @@
   background: #37b24d;
 }
 
+.stats-section {
+  background: var(--light-card);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  margin-bottom: 22px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 15px;
+  border-radius: 14px;
+  text-align: center;
+  color: white;
+}
+
+.stat-card h4 {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 8px;
+}
+
+.stat-card .value {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.chart-container {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 14px;
+  margin-bottom: 15px;
+}
+
+body.dark-mode .chart-container {
+  background: #2d4059;
+}
+
+.chart-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 150px;
+  margin-bottom: 15px;
+}
+
+.bar {
+  flex: 1;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.85rem;
+  min-height: 20px;
+  padding-bottom: 5px;
+  transition: all 0.3s;
+}
+
+.bar:hover {
+  opacity: 0.8;
+  transform: scaleY(1.05);
+}
+
+.bar-label {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #5f6472;
+  margin-top: 8px;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.export-buttons button {
+  flex: 1;
+  min-width: 120px;
+  background: #4ecdc4;
+}
+
+.export-buttons button:hover {
+  background: #3db8b0;
+}
+
 body {
   min-height: 100vh;
-  background: linear-gradient(135deg, #bdeeff, #ffd6e0, #ffffff);
-  color: #2d3142;
+  background: linear-gradient(135deg, var(--light-bg), #ffd6e0, #ffffff);
+  color: var(--light-text);
   padding: 20px;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  background: linear-gradient(135deg, #0f0f1e, #1a1a2e, #16213e);
 }
 
 .container {
@@ -183,7 +349,7 @@ header {
 
 header h1 {
   font-size: 2.8rem;
-  color: #2d3142;
+  color: var(--light-text);
   margin-bottom: 8px;
 }
 
@@ -203,7 +369,7 @@ header p {
 .tasks-section,
 .timer-section,
 .brain-section {
-  background: rgba(255, 255, 255, 0.88);
+  background: var(--light-card);
   border-radius: 22px;
   padding: 22px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
@@ -216,11 +382,11 @@ header p {
 
 .card h2 {
   font-size: 2.2rem;
-  color: #5bc0eb;
+  color: var(--primary);
 }
 
 .card p {
-  color: #5f6472;
+  color: var(--light-text);
   font-weight: bold;
 }
 
@@ -233,9 +399,13 @@ header p {
 h3 {
   margin-bottom: 16px;
   font-size: 1.4rem;
+  color: var(--light-text);
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"] {
+  background: var(--light-card);
+  color: var(--light-text);
   width: 70%;
   padding: 13px;
   border: 2px solid #e5e7eb;
@@ -244,15 +414,23 @@ input[type="text"] {
   font-size: 1rem;
 }
 
-input[type="text"]:focus {
-  border-color: #5bc0eb;
+body.dark-mode input[type="text"],
+body.dark-mode input[type="number"] {
+  background: #2d4059;
+  border-color: #3d5a73;
+  color: #eee;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: var(--primary);
 }
 
 button {
   padding: 13px 18px;
   border: none;
   border-radius: 14px;
-  background: #5bc0eb;
+  background: var(--primary);
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -260,7 +438,7 @@ button {
 }
 
 button:hover {
-  background: #f7a8b8;
+  background: var(--secondary);
   transform: translateY(-2px);
 }
 
@@ -277,7 +455,12 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-left: 5px solid #f7a8b8;
+  border-left: 5px solid var(--secondary);
+  color: var(--light-text);
+}
+
+body.dark-mode li {
+  background: #2d4059;
 }
 
 li.completed {
@@ -290,7 +473,7 @@ li.completed {
   text-align: center;
   margin: 20px 0;
   font-weight: bold;
-  color: #2d3142;
+  color: var(--light-text);
 }
 
 .timer-buttons {
@@ -301,6 +484,8 @@ li.completed {
 }
 
 textarea {
+  background: var(--light-card);
+  color: var(--light-text);
   width: 100%;
   height: 130px;
   padding: 15px;
@@ -309,10 +494,16 @@ textarea {
   resize: none;
   outline: none;
   font-size: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+body.dark-mode textarea {
+  background: #2d4059;
+  border-color: #3d5a73;
 }
 
 textarea:focus {
-  border-color: #f7a8b8;
+  border-color: var(--secondary);
 }
 
 footer {
@@ -341,7 +532,8 @@ footer {
     font-size: 2.2rem;
   }
 
-  input[type="text"] {
+  input[type="text"],
+  input[type="number"] {
     width: 100%;
     margin-bottom: 10px;
   }
@@ -368,10 +560,22 @@ footer {
   .task-controls button {
     width: 100%;
   }
+
+  .theme-toggle {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
   </style>
 </head>
 <body>
+
+<button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">🌙</button>
 
 <div class="container">
   <div class="main-content">
@@ -432,6 +636,38 @@ footer {
       </div>
     </section>
 
+    <section class="stats-section">
+      <h3>📊 Estatísticas</h3>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h4>Semana Atual</h4>
+          <div class="value" id="weekXP">0</div>
+          <p style="font-size: 0.85rem;">XP</p>
+        </div>
+        <div class="stat-card">
+          <h4>Dias Ativos</h4>
+          <div class="value" id="activeDays">0</div>
+          <p style="font-size: 0.85rem;">dias</p>
+        </div>
+        <div class="stat-card">
+          <h4>Melhor Dia</h4>
+          <div class="value" id="bestDay">-</div>
+          <p style="font-size: 0.85rem;">da semana</p>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h4 style="margin-bottom: 15px; color: var(--light-text);">Produtividade da Semana</h4>
+        <div class="chart-bar" id="weekChart"></div>
+      </div>
+
+      <div class="export-buttons">
+        <button onclick="exportJSON()">📥 Exportar JSON</button>
+        <button onclick="exportCSV()">📥 Exportar CSV</button>
+      </div>
+    </section>
+
     <section class="brain-section">
       <h3>Descarregar ideias</h3>
 
@@ -453,7 +689,7 @@ footer {
       <button onclick="nextMonth()">Próximo →</button>
     </div>
     <div class="calendar-grid" id="calendarGrid"></div>
-    <div style="text-align: center; font-size: 0.9rem; color: #5f6472;">
+    <div style="text-align: center; font-size: 0.9rem; color: var(--light-text);">
       <p id="streakInfo">Nenhuma atividade registrada</p>
     </div>
   </div>
@@ -469,11 +705,15 @@ footer {
   let tasksCompleted = 0;
   let currentCalendarDate = new Date();
   let activityDates = new Set();
+  let weeklyXP = {};
+  let todayXP = 0;
+  let streakStartedToday = false;
 
   function updateDashboard() {
     document.getElementById("xp").textContent = xp;
     document.getElementById("streak").textContent = streak;
     document.getElementById("tasksCompleted").textContent = tasksCompleted;
+    updateStats();
   }
 
   function addTask() {
@@ -502,12 +742,20 @@ footer {
       button.remove();
 
       xp += 10;
+      todayXP += 10;
       tasksCompleted += 1;
-      streak += 1;
+      
+      if (!streakStartedToday) {
+        streak += 1;
+        streakStartedToday = true;
+      }
 
-      // Marca a data de hoje como ativa
       const today = new Date().toISOString().split('T')[0];
       activityDates.add(today);
+      
+      const day = new Date().getDay();
+      const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+      weeklyXP[dayNames[day]] = (weeklyXP[dayNames[day]] || 0) + 10;
 
       updateDashboard();
       renderCalendar();
@@ -574,6 +822,12 @@ footer {
 
         if (xpReward > 0) {
           xp += xpReward;
+          todayXP += xpReward;
+          
+          const day = new Date().getDay();
+          const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+          weeklyXP[dayNames[day]] = (weeklyXP[dayNames[day]] || 0) + xpReward;
+          
           updateDashboard();
           saveData();
         }
@@ -642,17 +896,22 @@ footer {
     localStorage.setItem("dopaminaTasksCompleted", tasksCompleted);
     localStorage.setItem("dopaminaTasks", document.getElementById("taskList").innerHTML);
     localStorage.setItem("dopaminaActivityDates", JSON.stringify(Array.from(activityDates)));
+    localStorage.setItem("dopaminaWeeklyXP", JSON.stringify(weeklyXP));
+    localStorage.setItem("dopaminaTodayXP", todayXP);
+    localStorage.setItem("dopaminaStreakStartedToday", streakStartedToday);
   }
 
   function playAlarmSound() {
     const audio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
-    audio.play();
+    audio.play().catch(e => console.log("Som não disponível:", e));
   }
 
   function loadData() {
     xp = parseInt(localStorage.getItem("dopaminaXP")) || 0;
     streak = parseInt(localStorage.getItem("dopaminaStreak")) || 0;
     tasksCompleted = parseInt(localStorage.getItem("dopaminaTasksCompleted")) || 0;
+    todayXP = parseInt(localStorage.getItem("dopaminaTodayXP")) || 0;
+    streakStartedToday = localStorage.getItem("dopaminaStreakStartedToday") === 'true';
 
     document.getElementById("taskList").innerHTML =
       localStorage.getItem("dopaminaTasks") || "";
@@ -660,6 +919,11 @@ footer {
     const savedDates = localStorage.getItem("dopaminaActivityDates");
     if (savedDates) {
       activityDates = new Set(JSON.parse(savedDates));
+    }
+
+    const savedWeeklyXP = localStorage.getItem("dopaminaWeeklyXP");
+    if (savedWeeklyXP) {
+      weeklyXP = JSON.parse(savedWeeklyXP);
     }
 
     document.querySelectorAll("#taskList li button").forEach(button => {
@@ -674,16 +938,13 @@ footer {
     const year = currentCalendarDate.getFullYear();
     const month = currentCalendarDate.getMonth();
 
-    // Atualiza header
     const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
     document.getElementById("calendarMonth").textContent = `${monthNames[month]} ${year}`;
 
-    // Limpa grid anterior
     const calendarGrid = document.getElementById("calendarGrid");
     calendarGrid.innerHTML = "";
 
-    // Adiciona nomes dos dias
     const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
     dayNames.forEach(name => {
       const dayNameEl = document.createElement("div");
@@ -692,17 +953,14 @@ footer {
       calendarGrid.appendChild(dayNameEl);
     });
 
-    // Primeiro dia do mês
     const firstDay = new Date(year, month, 1).getDay();
     
-    // Dias vazios antes do mês
     for (let i = 0; i < firstDay; i++) {
       const emptyDay = document.createElement("div");
       emptyDay.className = "calendar-day empty";
       calendarGrid.appendChild(emptyDay);
     }
 
-    // Dias do mês
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const today = new Date();
 
@@ -751,7 +1009,97 @@ footer {
     }
   }
 
+  // Estatísticas
+  function updateStats() {
+    document.getElementById("activeDays").textContent = activityDates.size;
+    document.getElementById("weekXP").textContent = Object.values(weeklyXP).reduce((a, b) => a + b, 0);
+
+    const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+    let bestDay = '-';
+    let maxXP = 0;
+    
+    for (const [day, xpValue] of Object.entries(weeklyXP)) {
+      if (xpValue > maxXP) {
+        maxXP = xpValue;
+        bestDay = day;
+      }
+    }
+    
+    document.getElementById("bestDay").textContent = bestDay;
+
+    // Renderizar gráfico
+    const chartHTML = dayNames.map(day => {
+      const dayXP = weeklyXP[day] || 0;
+      const maxPossible = 100;
+      const height = (dayXP / maxPossible) * 100;
+      return `
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+          <div class="bar" style="height: ${Math.max(height, 10)}%;" title="${dayXP} XP">${dayXP > 0 ? dayXP : ''}</div>
+          <div class="bar-label">${day}</div>
+        </div>
+      `;
+    }).join('');
+    
+    document.getElementById("weekChart").innerHTML = chartHTML;
+  }
+
+  // Exportar dados
+  function exportJSON() {
+    const data = {
+      xp,
+      streak,
+      tasksCompleted,
+      activityDates: Array.from(activityDates),
+      weeklyXP,
+      exportDate: new Date().toISOString()
+    };
+
+    const dataStr = JSON.stringify(data, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `dopamina-backup-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+  }
+
+  function exportCSV() {
+    let csv = "Data,XP,Tipo\n";
+    
+    for (const date of activityDates) {
+      csv += `${date},${weeklyXP[new Date(date).toLocaleDateString('pt-BR', {weekday: 'short'})] || 0},Atividade\n`;
+    }
+
+    csv += `\n,Total XP,${xp}\n`;
+    csv += `,,Sequência,${streak}\n`;
+    csv += `,,Tarefas,${tasksCompleted}\n`;
+
+    const csvBlob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(csvBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `dopamina-backup-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+  }
+
+  // Tema
+  function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('dopaminaTheme', isDark ? 'dark' : 'light');
+    document.querySelector('.theme-toggle').textContent = isDark ? '☀️' : '🌙';
+  }
+
+  function loadTheme() {
+    const savedTheme = localStorage.getItem('dopaminaTheme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('.theme-toggle').textContent = '☀️';
+    }
+  }
+
   // Inicialização
+  loadTheme();
   loadData();
   loadNotesData();
   updateTimerDisplay();
@@ -760,7 +1108,9 @@ footer {
 
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
+  navigator.serviceWorker.register("service-worker.js").catch(err => {
+    console.log("Service Worker não registrado:", err);
+  });
 }
 </script>
 </body>
