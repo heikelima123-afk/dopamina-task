@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dopamina Task</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#5bc0eb">
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+.timer-config {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+.note-card {
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 14px;
+  margin-top: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  border-left: 5px solid #5bc0eb;
+}
+
+.note-card p {
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}
+.timer-config label {
+  font-weight: bold;
+  color: #5f6472;
+}
+
+.timer-config input {
+  width: 80px;
+  padding: 8px;
+  border-radius: 10px;
+  border: 2px solid #e5e7eb;
+  margin-left: 5px;
+}
+
+.calendar-container {
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  margin-bottom: 22px;
+  position: sticky;
+  top: 20px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendar-header button {
+  background: #f7a8b8;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+.calendar-header h4 {
+  font-size: 1.1rem;
+  color: #2d3142;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.calendar-day-name {
+  text-align: center;
+  font-weight: bold;
+  color: #5f6472;
+  font-size: 0.85rem;
+  padding: 8px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  background: #f0f4f8;
+  color: #5f6472;
+  transition: all 0.2s;
+}
+
+.calendar-day:hover {
+  transform: scale(1.1);
+}
+
+.calendar-day.today {
+  background: linear-gradient(135deg, #5bc0eb, #f7a8b8);
+  color: white;
+}
+
+.calendar-day.active {
+  background: #f7a8b8;
+  color: white;
+}
+
+.calendar-day.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.task-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  padding: 15px;
+  background: #f8fafc;
+  border-radius: 14px;
+}
+
+.task-controls button {
+  flex: 1;
+  min-width: 140px;
+  padding: 10px 15px;
+  font-size: 0.95rem;
+}
+
+.task-controls button.danger {
+  background: #ff6b6b;
+}
+
+.task-controls button.danger:hover {
+  background: #ff5252;
+}
+
+.task-controls button.success {
+  background: #51cf66;
+}
+
+.task-controls button.success:hover {
+  background: #37b24d;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #bdeeff, #ffd6e0, #ffffff);
+  color: #2d3142;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  color: #2d3142;
+  margin-bottom: 8px;
+}
+
+header p {
+  font-size: 1.1rem;
+  color: #5f6472;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card,
+.tasks-section,
+.timer-section,
+.brain-section {
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.card {
+  text-align: center;
+}
+
+.card h2 {
+  font-size: 2.2rem;
+  color: #5bc0eb;
+}
+
+.card p {
+  color: #5f6472;
+  font-weight: bold;
+}
+
+.tasks-section,
+.timer-section,
+.brain-section {
+  margin-bottom: 22px;
+}
+
+h3 {
+  margin-bottom: 16px;
+  font-size: 1.4rem;
+}
+
+input[type="text"] {
+  width: 70%;
+  padding: 13px;
+  border: 2px solid #e5e7eb;
+  border-radius: 14px;
+  outline: none;
+  font-size: 1rem;
+}
+
+input[type="text"]:focus {
+  border-color: #5bc0eb;
+}
+
+button {
+  padding: 13px 18px;
+  border: none;
+  border-radius: 14px;
+  background: #5bc0eb;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #f7a8b8;
+  transform: translateY(-2px);
+}
+
+ul {
+  list-style: none;
+  margin-top: 18px;
+}
+
+li {
+  background: #f8fafc;
+  padding: 14px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 5px solid #f7a8b8;
+}
+
+li.completed {
+  opacity: 0.65;
+  text-decoration: line-through;
+}
+
+.timer-display {
+  font-size: 3.5rem;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+  color: #2d3142;
+}
+
+.timer-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+textarea {
+  width: 100%;
+  height: 130px;
+  padding: 15px;
+  border-radius: 16px;
+  border: 2px solid #e5e7eb;
+  resize: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+textarea:focus {
+  border-color: #f7a8b8;
+}
+
+footer {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  color: #5f6472;
+}
+
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-container {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 14px;
+  }
+
+  header h1 {
+    font-size: 2.2rem;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  li {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .timer-display {
+    font-size: 2.8rem;
+  }
+
+  .task-controls {
+    flex-direction: column;
+  }
+
+  .task-controls button {
+    width: 100%;
+  }
+}
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="main-content">
+    <header>
+      <h1>Dopamina Task</h1>
+      <p>Pequenas vitórias, grandes avanços.</p>
+    </header>
+
+    <section class="dashboard">
+      <div class="card">
+        <h2 id="xp">0</h2>
+        <p>XP</p>
+      </div>
+      <div class="card">
+        <h2 id="streak">0</h2>
+        <p>Sequência</p>
+      </div>
+      <div class="card">
+        <h2 id="tasksCompleted">0</h2>
+        <p>Tarefas Concluídas</p>
+      </div>
+    </section>
+
+    <section class="tasks-section">
+      <h3>Missões do Dia</h3>
+      <input type="text" id="taskInput" placeholder="Nova missão...">
+      <button onclick="addTask()">Adicionar</button>
+      
+      <div class="task-controls">
+        <button class="success" onclick="clearCompletedTasks()">Limpar Tarefas Completas</button>
+        <button class="danger" onclick="clearAllTasks()">Limpar Todas as Tarefas</button>
+      </div>
+
+      <ul id="taskList"></ul>
+    </section>
+
+    <section class="timer-section">
+      <h3>Timer de Foco</h3>
+      <div class="timer-display" id="timer">25:00</div>
+
+      <div class="timer-config">
+        <label>
+          Foco (min):
+          <input type="number" id="focusMinutes" value="25" min="1">
+        </label>
+
+        <label>
+          Descanso (min):
+          <input type="number" id="breakMinutes" value="5" min="1">
+        </label>
+      </div>
+
+      <div class="timer-buttons">
+        <button onclick="startFocus()">Iniciar Foco</button>
+        <button onclick="startBreak()">Iniciar Descanso</button>
+        <button onclick="pauseTimer()">Pausar</button>
+        <button onclick="resetTimer()">Resetar</button>
+      </div>
+    </section>
+
+    <section class="brain-section">
+      <h3>Descarregar ideias</h3>
+
+      <textarea 
+        id="brainDump" 
+        placeholder="Anote ideias, lembretes ou tarefas rápidas..."
+      ></textarea>
+
+      <button onclick="saveNote()">Salvar Nota</button>
+
+      <div id="notesList"></div>
+    </section>
+  </div>
+
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <button onclick="previousMonth()">← Anterior</button>
+      <h4 id="calendarMonth">Maio 2026</h4>
+      <button onclick="nextMonth()">Próximo →</button>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+    <div style="text-align: center; font-size: 0.9rem; color: #5f6472;">
+      <p id="streakInfo">Nenhuma atividade registrada</p>
+    </div>
+  </div>
+
+  <footer>
+    Dopamina Task © 2026
+  </footer>
+</div>
+
+<script>
+  let xp = 0;
+  let streak = 0;
+  let tasksCompleted = 0;
+  let currentCalendarDate = new Date();
+  let activityDates = new Set();
+
+  function updateDashboard() {
+    document.getElementById("xp").textContent = xp;
+    document.getElementById("streak").textContent = streak;
+    document.getElementById("tasksCompleted").textContent = tasksCompleted;
+  }
+
+  function addTask() {
+    const taskInput = document.getElementById("taskInput");
+    const taskText = taskInput.value.trim();
+
+    if (taskText === "") return;
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <span>${taskText}</span>
+      <button onclick="completeTask(this)">Concluir</button>
+    `;
+
+    document.getElementById("taskList").appendChild(li);
+    taskInput.value = "";
+   
+    saveData();
+  }
+
+  function completeTask(button) {
+    const li = button.parentElement;
+
+    if (!li.classList.contains("completed")) {
+      li.classList.add("completed");
+      button.remove();
+
+      xp += 10;
+      tasksCompleted += 1;
+      streak += 1;
+
+      // Marca a data de hoje como ativa
+      const today = new Date().toISOString().split('T')[0];
+      activityDates.add(today);
+
+      updateDashboard();
+      renderCalendar();
+
+	    saveData();
+    }
+  }
+
+  function clearCompletedTasks() {
+    const completedTasks = document.querySelectorAll("#taskList li.completed");
+    completedTasks.forEach(task => task.remove());
+    saveData();
+  }
+
+  function clearAllTasks() {
+    if (confirm("Tem certeza que quer limpar TODAS as tarefas? Esta ação não pode ser desfeita.")) {
+      document.getElementById("taskList").innerHTML = "";
+      saveData();
+    }
+  }
+
+  let timer;
+  let timeLeft = 1500;
+
+  function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById("timer").textContent =
+      `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  function startFocus() {
+    clearInterval(timer);
+
+    const focusMinutes = document.getElementById("focusMinutes").value;
+    timeLeft = focusMinutes * 60;
+
+    runTimer("Foco concluído! +20 XP", 20);
+  }
+
+  function startBreak() {
+    clearInterval(timer);
+
+    const breakMinutes = document.getElementById("breakMinutes").value;
+    timeLeft = breakMinutes * 60;
+
+    runTimer("Descanso finalizado! Hora de voltar.", 0);
+  }
+
+  function runTimer(message, xpReward) {
+    updateTimerDisplay();
+
+    timer = setInterval(() => {
+      if (timeLeft > 0) {
+        timeLeft--;
+        updateTimerDisplay();
+      } else {
+        clearInterval(timer);
+        playAlarmSound();
+
+        setTimeout(() => {
+          alert(message);
+        }, 300);
+
+        if (xpReward > 0) {
+          xp += xpReward;
+          updateDashboard();
+          saveData();
+        }
+      }
+    }, 1000);
+  }
+
+  function saveNote() {
+    const noteInput = document.getElementById("brainDump");
+    const noteText = noteInput.value.trim();
+
+    if (noteText === "") return;
+
+    const noteCard = document.createElement("div");
+    noteCard.className = "note-card";
+
+    noteCard.innerHTML = `
+      <p>${noteText}</p>
+      <button onclick="deleteNote(this)">Excluir</button>
+    `;
+
+    document.getElementById("notesList").appendChild(noteCard);
+
+    noteInput.value = "";
+
+    saveNotesData();
+  }
+
+  function deleteNote(button) {
+    button.parentElement.remove();
+    saveNotesData();
+  }
+
+  function saveNotesData() {
+    localStorage.setItem(
+      "dopaminaNotes",
+      document.getElementById("notesList").innerHTML
+    );
+  }
+
+  function loadNotesData() {
+    document.getElementById("notesList").innerHTML =
+      localStorage.getItem("dopaminaNotes") || "";
+
+    document.querySelectorAll(".note-card button").forEach(button => {
+      button.setAttribute("onclick", "deleteNote(this)");
+    });
+  }
+
+  function pauseTimer() {
+    clearInterval(timer);
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+
+    const focusMinutes = document.getElementById("focusMinutes").value;
+    timeLeft = focusMinutes * 60;
+
+    updateTimerDisplay();
+  }
+
+  function saveData() {
+    localStorage.setItem("dopaminaXP", xp);
+    localStorage.setItem("dopaminaStreak", streak);
+    localStorage.setItem("dopaminaTasksCompleted", tasksCompleted);
+    localStorage.setItem("dopaminaTasks", document.getElementById("taskList").innerHTML);
+    localStorage.setItem("dopaminaActivityDates", JSON.stringify(Array.from(activityDates)));
+  }
+
+  function playAlarmSound() {
+    const audio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
+    audio.play();
+  }
+
+  function loadData() {
+    xp = parseInt(localStorage.getItem("dopaminaXP")) || 0;
+    streak = parseInt(localStorage.getItem("dopaminaStreak")) || 0;
+    tasksCompleted = parseInt(localStorage.getItem("dopaminaTasksCompleted")) || 0;
+
+    document.getElementById("taskList").innerHTML =
+      localStorage.getItem("dopaminaTasks") || "";
+
+    const savedDates = localStorage.getItem("dopaminaActivityDates");
+    if (savedDates) {
+      activityDates = new Set(JSON.parse(savedDates));
+    }
+
+    document.querySelectorAll("#taskList li button").forEach(button => {
+      button.setAttribute("onclick", "completeTask(this)");
+    });
+
+    updateDashboard();
+  }
+
+  // Funções do Calendário
+  function renderCalendar() {
+    const year = currentCalendarDate.getFullYear();
+    const month = currentCalendarDate.getMonth();
+
+    // Atualiza header
+    const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    document.getElementById("calendarMonth").textContent = `${monthNames[month]} ${year}`;
+
+    // Limpa grid anterior
+    const calendarGrid = document.getElementById("calendarGrid");
+    calendarGrid.innerHTML = "";
+
+    // Adiciona nomes dos dias
+    const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
+    dayNames.forEach(name => {
+      const dayNameEl = document.createElement("div");
+      dayNameEl.className = "calendar-day-name";
+      dayNameEl.textContent = name;
+      calendarGrid.appendChild(dayNameEl);
+    });
+
+    // Primeiro dia do mês
+    const firstDay = new Date(year, month, 1).getDay();
+    
+    // Dias vazios antes do mês
+    for (let i = 0; i < firstDay; i++) {
+      const emptyDay = document.createElement("div");
+      emptyDay.className = "calendar-day empty";
+      calendarGrid.appendChild(emptyDay);
+    }
+
+    // Dias do mês
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dayEl = document.createElement("div");
+      dayEl.className = "calendar-day";
+      dayEl.textContent = day;
+
+      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      
+      const isToday = today.getFullYear() === year && 
+                      today.getMonth() === month && 
+                      today.getDate() === day;
+      
+      const hasActivity = activityDates.has(dateStr);
+
+      if (isToday && hasActivity) {
+        dayEl.className = "calendar-day today";
+      } else if (hasActivity) {
+        dayEl.className = "calendar-day active";
+      } else if (isToday) {
+        dayEl.className = "calendar-day today";
+      }
+
+      calendarGrid.appendChild(dayEl);
+    }
+
+    updateStreakInfo();
+  }
+
+  function previousMonth() {
+    currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+    renderCalendar();
+  }
+
+  function nextMonth() {
+    currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+    renderCalendar();
+  }
+
+  function updateStreakInfo() {
+    if (activityDates.size === 0) {
+      document.getElementById("streakInfo").textContent = "Nenhuma atividade registrada";
+    } else {
+      document.getElementById("streakInfo").textContent = `${activityDates.size} dia(s) com atividade`;
+    }
+  }
+
+  // Inicialização
+  loadData();
+  loadNotesData();
+  updateTimerDisplay();
+  renderCalendar();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+</body>
+</html>
